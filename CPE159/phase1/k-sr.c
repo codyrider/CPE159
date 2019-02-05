@@ -13,7 +13,7 @@ void NewProcSR(func_p_t p) {  // arg: where process code starts
 
    if( pid_q is empty ) {     // may occur if too many been created
       cons_printf("Panic: no more process!\n");
-      ...                     // cannot continue, alternative: breakpoint();
+      breakpoint();                     // cannot continue, alternative: breakpoint();
    }
 
    ...                                       // alloc PID (1st is 0)
@@ -33,14 +33,14 @@ void NewProcSR(func_p_t p) {  // arg: where process code starts
 
 // count run_count and switch if hitting time slice
 void TimerSR(void) {
-   outportb(...                              // notify PIC timer done
+   outportb(PIC_CONTROL, TIMER_DONE);         // notify PIC timer done
 
-   ...                                       // count up run_count
-   ...                                       // count up total_count
+   run_count++;                                       // count up run_count
+   total_count++;                              // count up total_count
 
-   if(...                          ) {       // if runs long enough
+   if(run_count == TIME_SLICE)                  ) {       // if runs long enough
       ...                                    // move it to ready_q
-      ...                                    // change its state
+      state = READY;                                    // change its state
       ...                                    // running proc = NONE
    }
 }

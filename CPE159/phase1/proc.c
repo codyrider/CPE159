@@ -36,8 +36,9 @@ void InitProc(void) {
 void UserProc(void) {
 	cons_gotoRC(run_pid+1, 0);
    while(1) {
-      show 1st digit of my PID at row run_pid+1, 1st col
-      show 2nd digit of my PID at row run_pid+1, 2nd col
+	if(run_pid < 10)
+		cons_printf("0");
+	cons_printf("%d", run_pid);
 	Delay();
 
 	cons_printf("\r\r  \r\r");

@@ -18,9 +18,9 @@ char proc_stack[PROC_SIZE][PROC_STACK_SIZE];   // process runtime stacks
 struct i386_gate *intr_table;    // intr table's DRAM location
 
 void InitKernelData(void) {         // init kernel data
-   int i;
+	int i;
       
-   ... = get_idt_base();            // get intr table location
+	intr_table = get_idt_base();            // get intr table location
 
    Bzero(...);                      // clear 2 queues
    Bzero(...);
@@ -29,18 +29,23 @@ void InitKernelData(void) {         // init kernel data
    set run_pid to NONE
 
 void InitKernelControl(void) {      // init kernel control
-   fill_gate(...);                  // fill out intr table for timer
-   outportb(...);                   // mask out PIC for timer
+	fill_gate(&intr_table[TIMER_INTR], (int)TimerEntry, get_cs(), ACC_INTR_GATE, 0);                  // fill out intr table for timer
+	outportb(PIC_MASK, MASK);                   // mask out PIC for timer
 }
 
 void Scheduler(void) {      // choose run_pid
-   if run_pid is greater than 0, just return; // OK/picked
+	if(run_pid > 0) //run_pid is greater than 0, just return; // OK/picked
+	{
+		return;		
+	}
 
-   if ready_q is empty:
-      pick 0 as run_pid     // pick InitProc
-   else:
-      change state of PID 0 to ready
-      dequeue ready_q to set run_pid
+	if(QisEmpty()) //ready_q is empty: pick 0 as run_pid     // pick InitProc
+	{
+		
+	}
+	else:
+	change state of PID 0 to ready
+	dequeue ready_q to set run_pid
 
    ... ;                    // reset run_count of selected proc
    ... ;                    // upgrade its state to run

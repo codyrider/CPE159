@@ -3,16 +3,23 @@ entry.h = DONE
 lib.h = DONE
 sr.h = DONE
 proc.h = DONE
-include = DONE i think? not sure with IO_DELAY
-
-data.h = requires prototypes. not sure why run_pid is extern
-entry.S = requires stuff
-type.h = requires 2 definitions
-lib.c = requires 5 functions
-sr.c = requires 2 functions
+include = DONE i think? not sure with IO_DELAY.commented section at bottom
+type.h = DONE
 proc.c = requires 4 functions
-	delay done
-	showchar done. Im not sure if i went about it the right way, supposed to use pointer and VID_MASK
-	InitProc done. again not sure if i should have used pointer and VID_MASK
-	working on user proc
+        delay DONE
+        showchar DONE. Im not sure if i went about it the right way, supposed to use pointer and VID_MASK
+        InitProc DONE. again not sure if i should have used pointer and VID_MASK
+        UserProc DONE. again not sure if i should have used pointer and VID_MASK
+
+
+data.h = requires prototypes.
+entry.S = requires stuff
+lib.c = requires 5 functions
+	QisEmpty DONE
+	QisFull DONE
+	DeQ DONE
+	EnQ DONE
+	Bzero not sure about functions purpose. zeroize queue by stepping through adr's?	
+sr.c = requires 2 functions
 main.c = requires all kinds of shit
+	InitKernalControl DONE
