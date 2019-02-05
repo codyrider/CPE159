@@ -1,0 +1,15 @@
+const.h = DONE
+entry.h = DONE
+lib.h = DONE
+sr.h = DONE
+proc.h = DONE
+include = DONE i think? not sure with IO_DELAY
+
+data.h = requires prototypes. not sure why run_pid is extern
+entry.S = requires stuff
+type.h = requires 2 definitions
+lib.c = requires 5 functions
+sr.c = requires 2 functions
+proc.c = requires 4 functions
+
+main.c = requires all kinds of shit
