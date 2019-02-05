@@ -7,23 +7,30 @@
 
 void Delay(void) {  // delay CPU for half second by 'inb $0x80'
    int i;
-   for...  // loop to try to delay CPU for about half second
+   for(i=0; i<LOOP/2; i++) asm("inb $0x80");  // loop to try to delay CPU for about half second
 }
 
 void ShowChar(int row, int col, char ch) { // show ch at row, col
+/*
    unsigned short *p = ...   // upper-left corner of display
    ...
    ...
    ...
+*/
+	cons_gotoRC(row, col);
+	cons_printf(ch);
+
 }
 
 void InitProc(void) {
-   while(1) {
-	cons_printf(".");
+	while(1)
+	{
+        	cons_printf("\r.\r");
+		Delay();
 
-      erase dot
-      wait for about half second
-   }
+        	cons_printf("\b \r");
+		Delay();
+   	}
 }
 
 void UserProc(void) {
