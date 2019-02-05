@@ -12,10 +12,10 @@ int main(void) {
 	int i = 0;
 	cons_gotoRC(0, 0);
    while(1) {
-        cons_printf("\r.\r");
+        cons_printf("\r\r..\r\r");
 	for(i=0; i<LOOP/2; i++) asm("inb $0x80"); // each inb delays CPU .6 microsecond
 
-	cons_printf("\b \r");
+	cons_printf("\r\r  \r\r");
         for(i=0; i<LOOP/2; i++) asm("inb $0x80"); // each inb delays CPU .6 microsecond
 
    }

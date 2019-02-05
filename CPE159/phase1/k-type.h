@@ -17,10 +17,10 @@ typedef struct {
 } trapframe_t;
 
 typedef struct {
-   ...                       // read in 1.html
-   ...
-   ...
-   ...
+	int count;                       // read in 1.html
+	state_t state;
+	int total_count;
+	trapframe_t * trapframe_p;
 } pcb_t;                     
 
 typedef struct {             // generic queue type

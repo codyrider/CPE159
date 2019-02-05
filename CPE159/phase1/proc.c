@@ -28,18 +28,19 @@ void InitProc(void) {
         	cons_printf("\r.\r");
 		Delay();
 
-        	cons_printf("\b \r");
+        	cons_printf("\r \r");
 		Delay();
    	}
 }
 
 void UserProc(void) {
+	cons_gotoRC(run_pid+1, 0);
    while(1) {
       show 1st digit of my PID at row run_pid+1, 1st col
       show 2nd digit of my PID at row run_pid+1, 2nd col
-      wait for about half second
+	Delay();
 
-      erase above writing (one digit at a time)
-      wait for about half second
+	cons_printf("\r\r  \r\r");
+	Delay();
    }
 }
