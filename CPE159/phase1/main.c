@@ -1,7 +1,7 @@
 // main.c, 159
 // OS phase 1
 //
-// Team Name: ??????? (Members: ??????...)
+// Team Name: get_me_out (Members: cody rider, nick rentschler)
 
 #include "k-include.h"  // SPEDE includes
 #include "k-entry.h"    // entries to kernel (TimerEntry, etc.)
@@ -26,7 +26,8 @@ void InitKernelData(void) {         // init kernel data
    Bzero(...);
    for(i=...                        // put all PID's to pid queue
 
-   set run_pid to NONE
+   run_pid = NONE;//set run_pid to NONE
+}
 
 void InitKernelControl(void) {      // init kernel control
 	fill_gate(&intr_table[TIMER_INTR], (int)TimerEntry, get_cs(), ACC_INTR_GATE, 0);                  // fill out intr table for timer
@@ -41,44 +42,45 @@ void Scheduler(void) {      // choose run_pid
 
 	if(QisEmpty()) //ready_q is empty: pick 0 as run_pid     // pick InitProc
 	{
-		
+		run_pid = 0; //not sure if this is required or if more is needed like changing state
+		pcb[0].state = RUN;
+		InitProc();
 	}
 	else:
-	change state of PID 0 to ready
-	dequeue ready_q to set run_pid
-
-   ... ;                    // reset run_count of selected proc
-   ... ;                    // upgrade its state to run
+	{
+		pcb[0].state = READY;	//change state of PID 0 to ready
+		run_pid = DeQ(ready_q);	//dequeue ready_q to set run_pid
+	}
+	pcb[run_pid].run_count = 0;                    // reset run_count of selected proc
+	pcb[run_pid].state = RUN;                    // upgrade its state to run
 }
 
 int main(void) {                          // OS bootstraps
-   call to initialize kernel data
-   call to initialize kernel control
+	InitKernelData(); //call to initialize kernel data
+	InitKernelControl(); //call to initialize kernel control
 
-   call NewProcSR(InitProc) to create it  // create InitProc
-   call Scheduler()
-   call Loader(pcb[run_pid].trapframe_p); // load/run it
+	NewProcSR(InitProc); //call NewProcSR(InitProc) to create it  // create InitProc
+	Scheduler(); //call Scheduler()
+	Loader(pcb[run_pid].trapframe_p); //call Loader(pcb[run_pid].trapframe_p); // load/run it
 
    return 0; // statement never reached, compiler asks it for syntax
 }
 
 void Kernel(trapframe_t *trapframe_p) {           // kernel runs
-   char ch;
+	char ch;
 
-   pcb[...].trapframe_p = trapframe_p; // save it
+	pcb[run_pid].trapframe_p = trapframe_p; // save it
 
-   call TimerSR();                     // handle timer intr
+	call TimerSR();                     // handle timer intr
 
-   if KB of PC is pressed {            // check if keyboard pressed
-      read the key
-      if it's 'b':                     // 'b' for breakpoint
-         ...                           // let's go to GDB
-         break;
-      if it's 'n':                     // 'n' for new process
-         call NewProcSR(UserProc);     // create a UserProc
-     }
-   }
-   call Scheduler()    // may need to pick another proc
-   call Loader(...)
+	if( cons_kbhit() ) {            // check if keyboard pressed
+		ch = cons_getchar();
+		if(ch == 'b')                     // 'b' for breakpoint
+			breakpoint();                           // let's go to GDB
+		if(ch == 'n')                     // 'n' for new process
+			NewProcSR(UserProc);     // create a UserProc
+	}
+	Scheduler()    // may need to pick another proc
+	Loader(pcb[run_pid].trapframe_p);
 }
 
