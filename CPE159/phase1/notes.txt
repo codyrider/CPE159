@@ -13,7 +13,7 @@ proc.c = requires 4 functions
 
 
 data.h = requires prototypes.
-entry.S = requires stuff
+entry.S = probably close :)
 lib.c = requires 5 functions
 	QisEmpty DONE
 	QisFull DONE
