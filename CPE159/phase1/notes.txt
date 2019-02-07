@@ -27,3 +27,5 @@ main.c = requires all kinds of shit
 data.h = requires prototypes.
 entry.S = requires stuff
 sr.c = requires 2 functions
+        TimerSR DONE
+        
