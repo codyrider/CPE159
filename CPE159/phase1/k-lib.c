@@ -6,7 +6,11 @@
 
 // clear DRAM data block, zero-fill it
 void Bzero(char *p, int bytes) {
-   ...
+        int i;
+        for(i = 0; i < bytes; i++)
+        {
+                *(p + i) = 0;
+        }
 }
 
 int QisEmpty(q_t *p) { // return 1 if empty, else 0
@@ -41,6 +45,7 @@ int DeQ(q_t *p) { // return -1 if q[] is empty
                 else
                         p->q[i] = -1;
         }
+	p->tail--;
         return dq_value;
 }
 

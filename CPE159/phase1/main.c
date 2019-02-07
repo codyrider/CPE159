@@ -22,11 +22,14 @@ void InitKernelData(void) {         // init kernel data
       
 	intr_table = get_idt_base();            // get intr table location
 
-   Bzero(...);                      // clear 2 queues
-   Bzero(...);
-   for(i=...                        // put all PID's to pid queue
+	Bzero(ready_q);                      // clear 2 queues
+	Bzero(pid_q);
+	for(i=0; i < Q_SIZE; i++)                        // put all PID's to pid queue
+	{
+		EnQ(i, pid_q);
+	}
 
-   run_pid = NONE;//set run_pid to NONE
+	run_pid = NONE;//set run_pid to NONE
 }
 
 void InitKernelControl(void) {      // init kernel control
@@ -43,7 +46,7 @@ void Scheduler(void) {      // choose run_pid
 	if(QisEmpty()) //ready_q is empty: pick 0 as run_pid     // pick InitProc
 	{
 		run_pid = 0; //not sure if this is required or if more is needed like changing state
-		pcb[0].state = RUN;
+		pcb[0].state = RUN; //needed??????
 		InitProc();
 	}
 	else:

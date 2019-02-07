@@ -11,15 +11,9 @@ void Delay(void) {  // delay CPU for half second by 'inb $0x80'
 }
 
 void ShowChar(int row, int col, char ch) { // show ch at row, col
-/*
-   unsigned short *p = ...   // upper-left corner of display
-   ...
-   ...
-   ...
-*/
-	cons_gotoRC(row, col);
-	cons_printf(ch);
 
+   unsigned short *p = VID_HOME + row*80 + col;   // upper-left corner of display
+   *p = ch + VID_MASK;
 }
 
 void InitProc(void) {
