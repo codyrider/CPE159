@@ -24,7 +24,7 @@ void InitKernelData(void) {         // init kernel data
 
 	Bzero(ready_q);                      // clear 2 queues
 	Bzero(pid_q);
-	for(i=0; i < Q_SIZE; i++)                        // put all PID's to pid queue
+	for(i=1; i < Q_SIZE; i++)                        // put all PID's to pid queue
 	{
 		EnQ(i, pid_q);
 	}
