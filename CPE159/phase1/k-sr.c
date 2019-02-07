@@ -28,7 +28,7 @@ void NewProcSR(func_p_t p) {  // arg: where process code starts
    pcb[...].trapframe_p--;                   // lower by trapframe size
    pcb[...].trapframe_p->efl = EF_DEFAULT_VALUE|EF_INTR; // enables intr
    pcb[...].trapframe_p->cs = get_cs();                  // dupl from CPU
-   pcb[...].trapframe_p->eip =                           // set to code
+   pcb[...].trapframe_p->eip = p;                          // set to code
 }
 
 // count run_count and switch if hitting time slice
