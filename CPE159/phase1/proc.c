@@ -22,20 +22,19 @@ void InitProc(void) {
         	ShowChar(0, 0, '.');
 		Delay();
 
-        	cons_printf("\r \r");
+        	ShowChar(0, 0, ' ');
 		Delay();
    	}
 }
 
 void UserProc(void) {
-	cons_gotoRC(run_pid+1, 0);
-   while(1) {
-	if(run_pid < 10)
-		cons_printf("0");
-	cons_printf("%d", run_pid);
-	Delay();
+	while(1) {
+  		ShowChar(run_pid, 0, (run_pid/10)+48);
+		ShowChar(run_pid, 1, (run_pid % 10)+48);
+		Delay();
 
-	cons_printf("\r\r  \r\r");
-	Delay();
-   }
+		ShowChar(run_pid, 0, ' ');
+		ShowChar(run_pid, 1, ' ');
+		Delay();
+   	}
 }
