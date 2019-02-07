@@ -19,7 +19,7 @@ void ShowChar(int row, int col, char ch) { // show ch at row, col
 void InitProc(void) {
 	while(1)
 	{
-        	cons_printf("\r.\r");
+        	ShowChar(0, 0, '.');
 		Delay();
 
         	cons_printf("\r \r");
