@@ -9,7 +9,7 @@
 
 // load proc trapframe to run it
 ENTRY(Loader)
-   mov %ebx, %[esp+4] //copy 4 bytes from 4B above esp to ebx
+   mov %ebx, 4(%esp) //copy 4 bytes from 4B above esp to ebx
    mov %esp, %ebx //copy ebx to esp (point esp to process trapframe)
    popa //pop all (8) registers
    iret //return from interrupt
