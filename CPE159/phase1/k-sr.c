@@ -11,7 +11,7 @@
 void NewProcSR(func_p_t p) {  // arg: where process code starts
    int pid;
 
-   if( pid_q is empty ) {     // may occur if too many been created
+   if( QisEmpty(&ready_q) ) {     // may occur if too many been created
       cons_printf("Panic: no more process!\n");
       breakpoint();                     // cannot continue, alternative: breakpoint();
    }
@@ -35,13 +35,14 @@ void NewProcSR(func_p_t p) {  // arg: where process code starts
 void TimerSR(void) {
    outportb(PIC_CONTROL, TIMER_DONE);         // notify PIC timer done
 
-   run_count++;                                       // count up run_count
-   total_count++;                              // count up total_count
+   pcb[run_pid].run_count++;                                       // count up run_count
+   pcb[run_pid].total_count++;                              // count up total_count
 
-   if(run_count == TIME_SLICE)                  ) {       // if runs long enough
-      ...                                    // move it to ready_q
-      state = READY;                                    // change its state
-      ...                                    // running proc = NONE
+   if(pcb[run_pid].run_count == TIME_SLICE)                  ) {       // if runs long enough
+      EnQ(run_pid, &ready_q);                                    // move it to ready_q
+      pcb[run_pid].state = READY;                                    // change its state
+      run_pid = NONE;                                    // running proc = NONE
    }
 }
+
 
