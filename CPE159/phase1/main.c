@@ -22,8 +22,8 @@ void InitKernelData(void) {         // init kernel data
       
 	intr_table = get_idt_base();            // get intr table location
 
-	Bzero(ready_q);                      // clear 2 queues
-	Bzero(pid_q);
+	Bzero(ready_q, sizeof(q_t));                      // clear 2 queues
+	Bzero(pid_q, sizeof(q_t));
 	for(i=1; i < Q_SIZE; i++)                        // put all PID's to pid queue
 	{
 		EnQ(i, pid_q);
