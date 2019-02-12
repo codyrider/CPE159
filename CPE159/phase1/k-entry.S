@@ -24,4 +24,4 @@ ENTRY(TimerEntry)                  // will have efl, cs, eip pushed by hardware
    leal k_stack + K_STACK_SIZE, %esp  // set esp to top of kernel stack
    push %ebx   //(onto the kernel stack)
    cld  //clear the direction flag of efl
-   call CNAME(Kernal) //call C function Kernel
+   call CNAME(Kernel) //call C function Kernel

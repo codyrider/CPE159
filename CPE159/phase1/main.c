@@ -23,10 +23,10 @@ void InitKernelData(void) {         // init kernel data
 	intr_table = get_idt_base();            // get intr table location
 
 	Bzero(&ready_q, sizeof(q_t));                      // clear 2 queues
-	Bzero(&pid_q, sizeof(q_t));
+
 	for(i=1; i < Q_SIZE; i++)                        // put all PID's to pid queue
 	{
-		EnQ(i, pid_q);
+		EnQ(i, &pid_q);
 	}
 
 	run_pid = NONE;//set run_pid to NONE
@@ -43,16 +43,16 @@ void Scheduler(void) {      // choose run_pid
 		return;		
 	}
 
-	if(QisEmpty()) //ready_q is empty: pick 0 as run_pid     // pick InitProc
+	if(QisEmpty(&ready_q)) //ready_q is empty: pick 0 as run_pid     // pick InitProc
 	{
 		run_pid = 0; //not sure if this is required or if more is needed like changing state
 		pcb[0].state = RUN; //needed??????
 		InitProc();
 	}
-	else:
+	else
 	{
 		pcb[0].state = READY;	//change state of PID 0 to ready
-		run_pid = DeQ(ready_q);	//dequeue ready_q to set run_pid
+		run_pid = DeQ(&ready_q);	//dequeue ready_q to set run_pid
 	}
 	pcb[run_pid].run_count = 0;                    // reset run_count of selected proc
 	pcb[run_pid].state = RUN;                    // upgrade its state to run
@@ -74,7 +74,7 @@ void Kernel(trapframe_t *trapframe_p) {           // kernel runs
 
 	pcb[run_pid].trapframe_p = trapframe_p; // save it
 
-	call TimerSR();                     // handle timer intr
+	TimerSR();                     // handle timer intr
 
 	if( cons_kbhit() ) {            // check if keyboard pressed
 		ch = cons_getchar();
@@ -83,7 +83,7 @@ void Kernel(trapframe_t *trapframe_p) {           // kernel runs
 		if(ch == 'n')                     // 'n' for new process
 			NewProcSR(UserProc);     // create a UserProc
 	}
-	Scheduler()    // may need to pick another proc
+	Scheduler();    // may need to pick another proc
 	Loader(pcb[run_pid].trapframe_p);
 }
 
