@@ -1,4 +1,4 @@
-// k-sr.c, 159
+111// k-sr.c, 159
 
 #include "k-include.h"
 #include "k-type.h"
@@ -16,19 +16,20 @@ void NewProcSR(func_p_t p) {  // arg: where process code starts
       breakpoint();                     // cannot continue, alternative: breakpoint();
    }
 
-   ...                                       // alloc PID (1st is 0)
+   pid = DeQ(&pid_q);                      // alloc PID (1st is 0)
    ...                                       // clear PCB
    ...                                       // clear stack
-   ...                                       // change process state
+   pcb[pid].state = READY;                                       // change process state
 
-   if(pid > 0) ...                           // queue to ready_q if > 0
-
+   if(pid > 0)EnQ(pid, &ready_q);                        // queue to ready_q if > 0
+      
+      
 // point trapframe_p to stack & fill it out
-   pcb[...].trapframe_p = ...                // point to stack top
-   pcb[...].trapframe_p--;                   // lower by trapframe size
-   pcb[...].trapframe_p->efl = EF_DEFAULT_VALUE|EF_INTR; // enables intr
-   pcb[...].trapframe_p->cs = get_cs();                  // dupl from CPU
-   pcb[...].trapframe_p->eip = p;                          // set to code
+   pcb[pid].trapframe_p = [4096 - sizeof(trapframe_t)];                // point to stack top
+   pcb[pid].trapframe_p--;                   // lower by trapframe size
+   pcb[pid].trapframe_p->efl = EF_DEFAULT_VALUE|EF_INTR; // enables intr
+   pcb[pid].trapframe_p->cs = get_cs();                  // dupl from CPU
+   pcb[pid].trapframe_p->eip = p;                          // set to code
 }
 
 // count run_count and switch if hitting time slice
