@@ -1,0 +1,31 @@
+const.h = DONE
+entry.h = DONE
+lib.h = DONE
+sr.h = DONE
+proc.h = DONE
+include = DONE i think? not sure with IO_DELAY.commented section at bottom
+type.h = DONE
+proc.c = requires 4 functions
+        delay DONE
+        showchar DONE.
+        InitProc DONE.
+        UserProc DONE.
+lib.c = requires 5 functions
+        QisEmpty DONE
+        QisFull DONE
+        DeQ DONE
+        EnQ DONE
+        Bzero DONE
+main.c = requires all kinds of shit
+        InitKernelControl DONE
+        Scheduler DONE i think. not sure about the QisEmpty portion
+        Kernel DONE
+        main DONE
+        InitKernelData DONE         
+
+
+data.h = requires prototypes.
+entry.S = requires stuff
+sr.c = requires 2 functions
+        TimerSR DONE
+        
