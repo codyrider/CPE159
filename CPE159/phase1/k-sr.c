@@ -1,4 +1,4 @@
-111// k-sr.c, 159
+// k-sr.c, 159
 
 #include "k-include.h"
 #include "k-type.h"
@@ -17,15 +17,15 @@ void NewProcSR(func_p_t p) {  // arg: where process code starts
    }
 
    pid = DeQ(&pid_q);                                            // alloc PID (1st is 0)
-   BZero(&pcb[pid], sizeof[pcb_t];                               // clear PCB
-   BZero(&proc_stack[pid][0], PROC_STACK_SIZE;                   // clear stack
+   Bzero((char *)(&pcb[pid]), sizeof(pcb_t));                               // clear PCB
+   Bzero(&proc_stack[pid][0], PROC_STACK_SIZE);                   // clear stack
    pcb[pid].state = READY;                                       // change process state
 
    if(pid > 0)EnQ(pid, &ready_q);                        // queue to ready_q if > 0
-      
-      
+
+
 // point trapframe_p to stack & fill it out
-   pcb[pid].trapframe_p = [4096 - sizeof(trapframe_t)];                // point to stack top
+   pcb[pid].trapframe_p = (trapframe_t *) &proc_stack[pid][4052];                // point to stack top
    pcb[pid].trapframe_p--;                   // lower by trapframe size
    pcb[pid].trapframe_p->efl = EF_DEFAULT_VALUE|EF_INTR; // enables intr
    pcb[pid].trapframe_p->cs = get_cs();                  // dupl from CPU
@@ -45,5 +45,3 @@ void TimerSR(void) {
       run_pid = NONE;                                    // running proc = NONE
    }
 }
-
-
