@@ -1,7 +1,7 @@
 // main.c, 159
 // OS phase 1
 //
-// Team Name: get_me_out (Members: cody rider, nick rentschler)
+// Team Name: get_me_out (Members: Cody Rider, Nick Rentschler)
 
 #include "k-include.h"  // SPEDE includes
 #include "k-entry.h"    // entries to kernel (TimerEntry, etc.)
@@ -22,9 +22,9 @@ void InitKernelData(void) {         // init kernel data
       
 	intr_table = get_idt_base();            // get intr table location
 
-	Bzero(&ready_q, sizeof(q_t));                      // clear 2 queues
-
-	for(i=1; i < Q_SIZE; i++)                        // put all PID's to pid queue
+	Bzero((char *)&ready_q, sizeof(q_t));                      // clear 2 queues
+	Bzero((char *)&pid_q, sizeof(q_t));
+	for(i=0; i < Q_SIZE; i++)                        // put all PID's to pid queue
 	{
 		EnQ(i, &pid_q);
 	}
@@ -45,9 +45,7 @@ void Scheduler(void) {      // choose run_pid
 
 	if(QisEmpty(&ready_q)) //ready_q is empty: pick 0 as run_pid     // pick InitProc
 	{
-		run_pid = 0; //not sure if this is required or if more is needed like changing state
-		pcb[0].state = RUN; //needed??????
-		InitProc();
+		run_pid = 0;
 	}
 	else
 	{

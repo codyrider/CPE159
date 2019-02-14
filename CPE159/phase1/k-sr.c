@@ -11,13 +11,14 @@
 void NewProcSR(func_p_t p) {  // arg: where process code starts
    int pid;
 
-   if( QisEmpty(&ready_q) ) {     // may occur if too many been created
+   if( QisEmpty(&pid_q) ) {     // may occur if too many been created
       cons_printf("Panic: no more process!\n");
-      breakpoint();                     // cannot continue, alternative: breakpoint();
+      //breakpoint();                     // cannot continue, alternative: breakpoint();
+	return;
    }
 
    pid = DeQ(&pid_q);                                            // alloc PID (1st is 0)
-   Bzero((char *)(&pcb[pid]), sizeof(pcb_t));                               // clear PCB
+	Bzero((char *)(&pcb[pid]), sizeof(pcb_t));                               // clear PCB
    Bzero(&proc_stack[pid][0], PROC_STACK_SIZE);                   // clear stack
    pcb[pid].state = READY;                                       // change process state
 
@@ -25,7 +26,7 @@ void NewProcSR(func_p_t p) {  // arg: where process code starts
 
 
 // point trapframe_p to stack & fill it out
-   pcb[pid].trapframe_p = (trapframe_t *) &proc_stack[pid][4052];                // point to stack top
+   pcb[pid].trapframe_p = (trapframe_t *) &proc_stack[pid][PROC_STACK_SIZE];                // point to stack top
    pcb[pid].trapframe_p--;                   // lower by trapframe size
    pcb[pid].trapframe_p->efl = EF_DEFAULT_VALUE|EF_INTR; // enables intr
    pcb[pid].trapframe_p->cs = get_cs();                  // dupl from CPU
