@@ -9,15 +9,15 @@
 
 // load proc trapframe to run it
 ENTRY(Loader)
-   mov 4(%esp), %ebx //copy 4 bytes from 4B above esp to ebx
-   mov %ebx, %esp //copy ebx to esp (point esp to process trapframe)
+   movl 4(%esp), %ebx //copy 4 bytes from 4B above esp to ebx
+   movl %ebx, %esp //copy ebx to esp (point esp to process trapframe)
    popa //pop all (8) registers
    iret //return from interrupt
 
 // build proc trapframe, and go into kernel
 ENTRY(TimerEntry)                  // will have efl, cs, eip pushed by hardware
    pusha  //push all (8) registers
-   mov %esp, %ebx //copy esp to ebx
+   movl %esp, %ebx //copy esp to ebx
    movw $0x10, %ax                 // set kernel data segment registers
    mov %ax, %ds                    // set kernel data segment registers
    mov %ax, %es                    // set kernel data segment registers
