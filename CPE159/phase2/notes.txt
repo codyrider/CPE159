@@ -18,7 +18,7 @@ codingHints.txt
 	3 DONE
 	4 requires modification in InitKernelControl, add to intr_table
 	5 entry.S requires work
-	6 main.c, Kernel(), enter switch
+	6 DONE
 	7 requires 3 function definitions
 	8 DONE not sure if run_pid is NONE or back to 0 
 	9 not sure what to do when run_pid == 0
