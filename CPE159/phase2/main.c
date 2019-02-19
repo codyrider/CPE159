@@ -41,7 +41,9 @@ void InitKernelData(void) {         // init kernel data
 
 void InitKernelControl(void) {      // init kernel control
 	fill_gate(&intr_table[TIMER_INTR], (int)TimerEntry, get_cs(), ACC_INTR_GATE, 0);                  // fill out intr table for timer
-	fill_gate(&intr_table[....], (int)....Entry, get_cs(), ACC_INTR_GATE, 0);
+	fill_gate(&intr_table[GETPID_CALL], (int)GetPidEntry, get_cs(), ACC_INTR_GATE, 0);
+	fill_gate(&intr_table[SHOWCHAR_CALL], (int)ShowCharEntry, get_cs(), ACC_INTR_GATE, 0);
+	fill_gate(&intr_table[SLEEP_CALL], (int)SleepEntry, get_cs(), ACC_INTR_GATE, 0);
 	outportb(PIC_MASK, MASK);                   // mask out PIC for timer
 }
 
@@ -86,13 +88,13 @@ void Kernel(trapframe_t *trapframe_p) {           // kernel runs
 			TimerSR(); // handle timer intr
 			break;
 		case GETPID_CALL:
-			GetPidSR();
+			trapframe->eax = GetPidSR();
 			break;
 		case SHOWCHAR_CALL:
 			ShowCharSR();
 			break;
 		case SLEEP_CALL:
-			SleepSR();
+			SleepSR(trapframe->eax);
 			break;
 	}
 

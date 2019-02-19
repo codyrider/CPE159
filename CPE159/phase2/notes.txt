@@ -16,11 +16,11 @@ codingHints.txt
 	1 DONE
 	2 DONE
 	3 DONE
-	4 requires modification in InitKernelControl, add to intr_table
+	4 DONE not sure if we add all 3 to intr_table
 	5 entry.S requires work
 	6 DONE
-	7 k-sr.c requires 2 function definitions
+	7 k-sr.c requires 2 function definitions, i think GetPidSR is done
 	8 DONE 
-	9 k-sr.c timerSR not sure what to do when run_pid == 0
+	9 DONE k-sr.c/timerSR, not sure if returning when !run_pid
 	10 DONE
 	

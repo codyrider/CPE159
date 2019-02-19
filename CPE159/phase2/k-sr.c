@@ -65,7 +65,7 @@ void TimerSR(void) {
 	CheckWakeProc();
 	if(!run_pid)
 	{
-		....
+		return;
 	}
 
    	pcb[run_pid].run_count++;                                       // count up run_count
@@ -80,7 +80,7 @@ void TimerSR(void) {
 
 int GetPidSR(void)
 {
-
+	return run_pid;
 }
 
 void ShowCharSR(void)
