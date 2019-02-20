@@ -11,23 +11,24 @@ ENTRY(Loader) //loads proc trapframe to run it
    movl 4(%esp), %ebx
    movl %ebx, %esp
    popa
-   incr esp by 4 (add $4 to %esp -- skip 'entry_id' in trapframe) <-- !!!
+   add $4, %esp //incr esp by 4 (add $4 to %esp -- skip 'entry_id' in trapframe) <-- !!!
    iret
 
 ENTRY(TimerEntry)
    pushl $TIMER_INTR
-   jmp to common routine PreKernel
+   jmp PreKernel
 
-ENTRY(???Entry)
-   pushl $??? (new constant for a sys call)
-   jmp to common routine PreKernel
+ENTRY(SystemCallEntry)
+   pushl $SystemCallEntry // This one i'm not sure but it left both open so Im assuming i match variable names
+                          //(new constant for a sys call)
+   jmp PreKernel //jmp to common routine PreKernel
 
 PreKernel: // build rest of trapframe, switch stack, pass arg, call Kernel
    pusha   //  push all: eax ecx edx ebx esp ebp esi edi
    movl %esp, %ebx          // copy esp
    movw $0x10, %ax          // put 16 to ax
    mov %ax, %ds             // set kernel data segment registers ds
-  mov %ax, %es             // set kernel data segment registers es
+   mov %ax, %es             // set kernel data segment registers es
    leal k_stack + K_STACK_SIZE, %esp   // set esp to top of kernel stack
    pushl %ebx               // push (proc TF addr) there
    cld                      // clear direction flag bit
