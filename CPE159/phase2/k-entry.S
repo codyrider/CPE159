@@ -19,18 +19,17 @@ ENTRY(TimerEntry)
    jmp PreKernel
 
 ENTRY(GetPidEntry)
-   pushl $GETPIDCALL
+   pushl $GETPID_CALL
    jmp PreKernel
 
-/*
-ENTRY(GetPidEntry)
-   pushl $GETPIDCALL
+ENTRY(SleepEntry)
+   pushl $SLEEP_CALL
    jmp PreKernel
    
-ENTRY(GetPidEntry)
-   pushl $GETPIDCALL
+ENTRY(ShowCharEntry)
+   pushl $SHOWCHAR_CALL
    jmp PreKernel
-*/
+
                           
 
 PreKernel: // build rest of trapframe, switch stack, pass arg, call Kernel
