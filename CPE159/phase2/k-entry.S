@@ -18,10 +18,20 @@ ENTRY(TimerEntry)
    pushl $TIMER_INTR
    jmp PreKernel
 
-ENTRY(SystemCallEntry)
-   pushl $SystemCallEntry // This one i'm not sure but it left both open so Im assuming i match variable names
-                          //(new constant for a sys call)
-   jmp PreKernel //jmp to common routine PreKernel
+ENTRY(GetPidEntry)
+   pushl $GETPIDCALL
+   jmp PreKernel
+
+/*
+ENTRY(GetPidEntry)
+   pushl $GETPIDCALL
+   jmp PreKernel
+   
+ENTRY(GetPidEntry)
+   pushl $GETPIDCALL
+   jmp PreKernel
+*/
+                          
 
 PreKernel: // build rest of trapframe, switch stack, pass arg, call Kernel
    pusha   //  push all: eax ecx edx ebx esp ebp esi edi
