@@ -17,7 +17,7 @@ pcb_t pcb[PROC_SIZE];               // Process Control Blocks
 char proc_stack[PROC_SIZE][PROC_STACK_SIZE];   // process runtime stacks
 struct i386_gate *intr_table;    // intr table's DRAM location
 int sys_centi_sec;		//system time in centi-sec, initialize it 0
-q_t sleep_q			//sleeping proc PID's queued in here
+q_t sleep_q;			//sleeping proc PID's queued in here
 
 void InitKernelData(void) {         // init kernel data
 	int i;
@@ -88,14 +88,17 @@ void Kernel(trapframe_t *trapframe_p) {           // kernel runs
 			TimerSR(); // handle timer intr
 			break;
 		case GETPID_CALL:
-			trapframe->eax = GetPidSR();
+			trapframe_p->eax = GetPidSR();
 			break;
 		case SHOWCHAR_CALL:
-			ShowCharSR();
+			ShowCharSR(trapframe_p->eax, trapframe_p->ebx, trapframe_p->ecx);
 			break;
 		case SLEEP_CALL:
-			SleepSR(trapframe->eax);
+			SleepSR(trapframe_p->eax);
 			break;
+		default:
+			cons_printf("Panic: Invalid entry_id!\n");
+			breakpoint();
 	}
 
 	if( cons_kbhit() ) {            // check if keyboard pressed

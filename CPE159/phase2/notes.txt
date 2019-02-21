@@ -2,24 +2,24 @@ sys-call.h DONE
 proc.c DONE
 
 sys-call.c
-	GetPidCall
-	ShowCharCall
-	SleepCall
+	GetPidCall DONE
+	ShowCharCall DONE
+	SleepCall DONE
 
 k-entry.S
-	Loader
-	TimerEntry
-	Entry
-	PreKernel
+	Loader DONE
+	TimerEntry DONE
+	Entry DONE
+	PreKernel DONE
 
 codingHints.txt
 	1 DONE
 	2 DONE
 	3 DONE
-	4 DONE not sure if we add all 3 to intr_table
-	5 entry.S requires work
+	4 DONE
+	5 DONE
 	6 DONE
-	7 k-sr.c requires 2 function definitions, i think GetPidSR is done
+	7 k-sr.c ShowCharSR requires work
 	8 DONE 
 	9 DONE k-sr.c/timerSR, not sure if returning when !run_pid
 	10 DONE

@@ -7,7 +7,7 @@
 #include "k-sr.h"
 
 // to create a process: alloc PID, PCB, and process stack
-// build trapframe, initialize PCB, record PID to ready_q
+// build trapframe, initialize PCB, record PID to igned short *p = VID_HOME + row*80 + col;   // upper-left corner of display
 void NewProcSR(func_p_t p) {  // arg: where process code starts
    int pid;
 
@@ -39,12 +39,12 @@ void CheckWakeProc(void)
 	int limit;
 	int slp_pid;
 
-	limit = pcb[run_pid].tail;	
+	limit = sleep_q.tail;	
 
 	for(i = 0; i < limit; i++)
 	{
 		slp_pid = DeQ(&sleep_q);
-		if(pcb[slp_pid].wake_centi_sec >= sys_centi_sec)
+		if(pcb[slp_pid].wake_centi_sec <= sys_centi_sec)
 		{
 			pcb[slp_pid].state = READY;
 			EnQ(slp_pid, &ready_q);
@@ -83,14 +83,16 @@ int GetPidSR(void)
 	return run_pid;
 }
 
-void ShowCharSR(void)
+void ShowCharSR(int row, int col, char ch)
 {
+	unsigned short *p = VID_HOME + row*80 + col;   // upper-left corner of display
+	*p = ch + VID_MASK;
 
 }
 
 void SleepSR(int centi_sec)
 {
-	pcb[run_pid].wake_centi_sec = sys_centi_sec + centi_sec
+	pcb[run_pid].wake_centi_sec = sys_centi_sec + centi_sec;
 	pcb[run_pid].state = SLEEP;
 	EnQ(run_pid, &sleep_q);
 	run_pid = NONE;

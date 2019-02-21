@@ -9,7 +9,7 @@ void NewProcSR(func_p_t);
 void CheckWakeProc(void);
 void TimerSR(void);
 int GetPidSR(void);
-void ShowCharSR(void);
+void ShowCharSR(int, int, char);
 void SleepSR(int);
 
 #endif
