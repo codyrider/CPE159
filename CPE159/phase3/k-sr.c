@@ -109,7 +109,7 @@ int MuxCreateSR(int flag)
 	return mux_id;
 }
 
-int MuxOpSR(int mux_id, int opcode)
+void MuxOpSR(int mux_id, int opcode)
 {
 	if(opcode == LOCK)
 	{
