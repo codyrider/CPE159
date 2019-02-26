@@ -1,0 +1,18 @@
+2. k-conts- DONE
+3. k-type - DONE
+4. main.c- DONE
+5. main.c- DONE
+6. entry.S- DONE
+	MuxCreatEentry DONE
+	MuxOpEntry DONE
+7. sys-call.c- add 3 new functions
+	muxCreateCall- DONE
+	muxOpCall- DONE
+	WriteCall-
+8. proc.c-modify
+	initProc-
+	UserProc-
+9. main.c/kernel-cases added to switch, not sure about parameters for either
+10. k-sr.c- DONE
+	MuxCreateSr-DONE
+	MuxOpSR-DONE
