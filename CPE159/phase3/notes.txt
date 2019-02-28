@@ -9,10 +9,10 @@
 	muxCreateCall- DONE
 	muxOpCall- DONE
 	WriteCall-
-8. proc.c-modify
-	initProc-
-	UserProc-
-9. main.c/kernel-cases added to switch, not sure about parameters for either
+8. proc.c-modify DONE
+	initProc- DONE i think. not sure if we have to muxop the while loop
+	UserProc- DONE i think
+9. main.c/kernel-DONE cases added to switch, not sure about parameters for either
 10. k-sr.c- DONE
 	MuxCreateSr-DONE
 	MuxOpSR-DONE

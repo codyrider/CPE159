@@ -31,5 +31,4 @@
 #define UNLOCK 2
 #define STDOUT 1
 
-
 #endif

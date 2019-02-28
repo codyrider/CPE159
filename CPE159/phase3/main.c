@@ -104,10 +104,10 @@ void Kernel(trapframe_t *trapframe_p) {           // kernel runs
 			SleepSR(trapframe_p->eax);
 			break;
 		case MUX_CREATE_CALL:
-			trapframe_p->eax = MuxCreateSR(1);
+			trapframe_p->eax = MuxCreateSR(trapframe_p->eax);
 			break;
 		case MUX_OP_CALL:
-			MuxOpSR();
+			MuxOpSR(trapframe_p->eax, trapframe_p->ebx);
 			break;
 		default:
 			cons_printf("Panic: Invalid entry_id!\n");

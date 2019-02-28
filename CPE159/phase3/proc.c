@@ -4,6 +4,7 @@
 
 #include "k-const.h"   // LOOP
 #include "sys-call.h"  // all service calls used below
+#include "k-data.h"
 
 void InitProc(void) {
    	int i;
@@ -18,17 +19,21 @@ void InitProc(void) {
 }
 
 void UserProc(void) {
- 	int my_pid = GetPidCall();  //get my PID
+	int my_pid = GetPidCall();
+
+	char str1[] = "PID xx is running, nobody else is using video\0";
+	char str2[] = "                                                \0";
+
+	str1[4] = '0' + my_pid / 10;
+	str1[5] = '0' + my_pid % 10;
 
   	while(1) {
-		MuxOpCall(vid_mux, LOCK);
-      		ShowCharCall(my_pid, 0, '0' + my_pid / 10); // show my PID
-      		ShowCharCall(my_pid, 1, '0' + my_pid % 10);
-      		SleepCall(500);                              //sleep .5 sec
+		MuxOpCall(vid_mux, LOCK);      
+      		WriteCall(STDOUT, (char *)&str1);
+		SleepCall(50);                              //sleep .5 sec
 
-      		ShowCharCall(my_pid, 0, ' ');                //erasure
-     		ShowCharCall(my_pid, 1, ' ');
-      		SleepCall(500);
+      		WriteCall(STDOUT, (char *)&str2);
+		SleepCall(50);
 		MuxOpCall(vid_mux, UNLOCK);
    }
 }
