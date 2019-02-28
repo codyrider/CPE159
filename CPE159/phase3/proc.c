@@ -21,8 +21,8 @@ void InitProc(void) {
 void UserProc(void) {
 	int my_pid = GetPidCall();
 
-	char str1[] = "PID xx is running, nobody else is using video\0";
-	char str2[] = "                                                \0";
+	char str1[] = "PID xx is running exclusively using the video display...\0";
+	char str2[] = "                                                           \0";
 
 	str1[4] = '0' + my_pid / 10;
 	str1[5] = '0' + my_pid % 10;
