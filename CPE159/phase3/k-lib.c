@@ -34,7 +34,7 @@ int DeQ(q_t *p) { // return -1 if q[] is empty
         int i;
 
         if(QisEmpty(p)) {
-                return -1;
+                return NONE;
         }
 
         dq_value = p->q[0];
@@ -43,7 +43,7 @@ int DeQ(q_t *p) { // return -1 if q[] is empty
                 if(i < p->tail - 1)
                         p->q[i] = p->q[i+1];
                 else
-                        p->q[i] = -1;
+                        p->q[i] = NONE;
         }
 	p->tail--;
         return dq_value;
