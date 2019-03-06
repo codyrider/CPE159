@@ -97,7 +97,7 @@ void WriteCall(int device, char *str)
 		while(*str != '\0')
 		{
 			MuxOpCall(term[term_no].out_mux, LOCK);
-			EnQ(*str, &term[term_no].out_q);
+			EnQ((int)str, &term[term_no].out_q);
 			
 			if(device == TERM0_INTR)
 			{

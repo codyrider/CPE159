@@ -41,7 +41,7 @@
 #define TXRDY 2			//terminal has a transmit ready event
 #define	RXRDY 4			//terminal has a receive ready event
 #define TRUE 1
-#define FALSE 1
+#define FALSE 0
 #define MASK 0xffffffe6		// new mask 1111 1111 1111 1111 1111 1111 1110 0110
 
 #endif
