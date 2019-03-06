@@ -2,6 +2,8 @@
 // calls to kernel services
 
 #include "k-const.h"
+#include "k-data.h"
+#include "k-lib.h"
 
 int GetPidCall(void) {
    int pid;
@@ -99,22 +101,16 @@ void WriteCall(int device, char *str)
 			
 			if(device == TERM0_INTR)
 			{
-				asm
-				(
-					"int %0"
+				asm(	"int %0"
 					:	//no output
 					: "g" (TERM0_INTR) //input
-					:	//no registers
 				);
 			}
 			else
 			{
-				asm
-				(
-			                "int %0"
-                                        :       //no output
-                                        : "g" (TERM1_INTR) //input
-                                        :       //no registers
+				asm(	"int %0"
+                                    	:       //no output
+                                    	: "g" (TERM1_INTR) //input
 				);
 			}
 			

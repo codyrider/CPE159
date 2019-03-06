@@ -114,11 +114,11 @@ void Kernel(trapframe_t *trapframe_p) {           // kernel runs
 			break;
 		case TERM0_INTR:
 			TermSR(0);
-			outportb(PIC_CONTROL, TERM0_DONE);
+			outportb(PIC_CONTROL, TERM0_DONE_VAL);
 			break;
 		case TERM1_INTR:
-			TERMSR(1);
-			outportb(PIC_CONTROL, TERM1_DONE);
+			TermSR(1);
+			outportb(PIC_CONTROL, TERM1_DONE_VAL);
 			break;
 		default:
 			cons_printf("Panic: Invalid entry_id!\n");

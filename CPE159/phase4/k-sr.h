@@ -13,5 +13,8 @@ void ShowCharSR(int, int, char);
 void SleepSR(int);
 int MuxCreateSR(int);
 void MuxOpSR(int, int);
+void TermSR(int);
+void TermTxSR(int);
+void TermRxSR(int);
 
 #endif

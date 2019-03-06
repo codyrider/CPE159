@@ -143,14 +143,14 @@ void MuxOpSR(int mux_id, int opcode)
 
 void TermSR(int term_no)
 {
-
-	//read IIR??
+	int type;
+	type = inportb(term[term_no].io_base+IIR);	//read IIR??
 	
-	if( == TXRDY)
+	if(type == TXRDY)
 	{
 		TermTxSR(term_no);
 	}
-	else if( == RXRDY)
+	else if(type == RXRDY)
 	{
 		TermRxSR(term_no);
 	}
@@ -173,7 +173,12 @@ void TermTxSR(int term_no)
 	{
 		ch = DeQ(&term[term_no].out_q);
 		outportb(term[term_no].io_base+DATA, *ch);
-		term[term_no].tx_missed = TRUE
-		MuxOpSR(term_no, UNLOCK);
+		term[term_no].tx_missed = FALSE;
+		MuxOpSR(term[term_no].out_mux, UNLOCK);
 	}	
+}
+
+void TermRxSR(int term_no)
+{
+	return;
 }
