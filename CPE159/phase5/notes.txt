@@ -1,0 +1,8 @@
+1. DONE
+2. DONE
+3. DONE
+4. DONE 
+5. DONE
+
+
+phase4 corrections: cant make a correction to combining asm if statements. inserting device causes Error: operands given don't match any known 386 instruction.       Check with Cheng!
