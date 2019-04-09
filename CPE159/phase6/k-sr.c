@@ -236,7 +236,7 @@ int ForkSR(void)
 	while(*p != 0)
 	{
 		*p += delta;
-		p = (int *)(*p - delta);
+		p = (int *)*p;
 	}
 
 	return child_pid;
