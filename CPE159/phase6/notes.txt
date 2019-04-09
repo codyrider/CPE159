@@ -1,0 +1,24 @@
+2. DONE
+3. DONE
+4. DONE
+5. DONE
+	ForkCall- DONE
+	WriteCall- DONE
+	ExitCall- DONE
+6. DONE
+7. DONE not sure about trapframe input and output
+	FORK_CALL- DONE
+	WRITE_CALL- DONE
+	EXIT_CALL- DONE
+8. DONE
+9. DONE
+	Memcpy- DONE
+	StrCmp- DONE
+	Itoa- DONE 
+10. DONE iffy on what needs to be output to terminal. what about double digit #'s?
+11. fill in 3 SR's
+	ForkSR-
+	WaitSR- DONE
+	ExitSR- DONE 
+
+
