@@ -1,0 +1,13 @@
+2. DONE
+3. DONE
+4. DONE
+5. DONE
+6. DONE
+7. DONE
+8. DONE
+9. Not 100% sure about placement of SignalCall and ExecCall
+10. 
+	ExecSR- DONE, not sure about setting up new trapframe
+	SignalSR- DONE
+	Wrapper- DONE, is arithmetic operations correct? (ie adding vs subtracting)
+	TermRxSR-
