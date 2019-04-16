@@ -73,9 +73,9 @@ void TimerSR(void) {
    	pcb[run_pid].total_count++;                              // count up total_count
 
    	if(pcb[run_pid].run_count == TIME_SLICE){       // if runs long enough
-     	EnQ(run_pid, &ready_q);                                    // move it to ready_q
-      	pcb[run_pid].state = READY;                                    // change its state
-      	run_pid = NONE;                                    // running proc = NONE
+     		EnQ(run_pid, &ready_q);                                    // move it to ready_q
+      		pcb[run_pid].state = READY;                                    // change its state
+      		run_pid = NONE;                                    // running proc = NONE
    	}
 }
 
@@ -196,7 +196,8 @@ void TermRxSR(int term_no)
 	if(ch == SIGINT && !QisEmpty(&mux[term[term_no].in_mux].suspend_q))
 	{
 		suspended_pid = mux[term[term_no].in_mux].suspend_q.q[0];
-		if(pcb[suspended_pid].sigint_handler)
+		sigint_handler = pcb[suspended_pid].sigint_handler;
+		if(sigint_handler)
 		{
 
 			if(term_no == 0)
@@ -327,9 +328,11 @@ void ExecSR(int code, int arg)
 	int code_page;
 	int stack_page;
 	int i;
-	char * code_addr;
-	char * stack_addr;
+	int * code_addr;
+	int * stack_addr;
 
+	int* temp;
+	
 	code_page = NONE;
 	stack_page = NONE;
 
@@ -356,21 +359,24 @@ void ExecSR(int code, int arg)
 		}
 	}
 	
-	code_addr = (char *)((code_page * PAGE_SIZE) + RAM);
-	stack_addr = (char *)((stack_page * PAGE_SIZE) + RAM);
-	MemCpy(code_addr, (char *)code, PAGE_SIZE);
+	code_addr = (int*)((code_page * PAGE_SIZE) + RAM);
+	stack_addr = (int*)((stack_page * PAGE_SIZE) + RAM);
+	MemCpy((char*)code_addr, (char *)code, PAGE_SIZE);
 
-	Bzero(stack_addr, PAGE_SIZE);
+	Bzero((char *)stack_addr, PAGE_SIZE);
+
+	stack_addr = (int*)((int)stack_addr + PAGE_SIZE);
+	stack_addr--;
+	stack_addr--;
 	*stack_addr = arg;
-	stack_addr += PAGE_SIZE - 1;
-	stack_addr -= sizeof(int[2]);
+	stack_addr--;
 
-	
 	pcb[run_pid].trapframe_p = (trapframe_t *)stack_addr;
 	pcb[run_pid].trapframe_p--;
 	pcb[run_pid].trapframe_p->efl = EF_DEFAULT_VALUE | EF_INTR; //enables intr
 	pcb[run_pid].trapframe_p->cs = get_cs();
-	pcb[run_pid].trapframe_p->eip = (unsigned int)code_addr;
+	pcb[run_pid].trapframe_p->eip = (int)Aout;
+
 }
 
 void SignalSR(int sig_num, int handler)
@@ -380,12 +386,17 @@ void SignalSR(int sig_num, int handler)
 
 void WrapperSR(int pid, int handler, int arg)
 {
-	char *temp;
-	temp = (char *)pcb[pid].trapframe_p;
-	pcb[pid].trapframe_p += sizeof(int[3]);
+	int *temp;
+	int delta;
+	temp = (int *)((int)pcb[pid].trapframe_p+sizeof(trapframe_t));
+	delta = sizeof(int[3]);
+	MemCpy((char*)((int)pcb[pid].trapframe_p - delta), (char*)((int)pcb[pid].trapframe_p), sizeof(trapframe_t));
+	pcb[pid].trapframe_p = (trapframe_t *)((int)pcb[pid].trapframe_p - delta);
+	*temp = pcb[pid].trapframe_p->eip;
+	temp--;
 	*temp = arg;
-	*(temp + sizeof(int)) = handler;
-	*(temp + sizeof(int[2])) = pcb[pid].trapframe_p->eip;
+	temp--;
+	*temp = handler;
 	pcb[pid].trapframe_p->eip = (int)Wrapper;
 	
 }
