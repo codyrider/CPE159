@@ -65,29 +65,26 @@ void MemCpy(char *dst, char *src, int size)
 	int i;
 	for(i = 0; i < size; i++)
 	{
-		*dst = *src;
-		dst++;
-		src++;
+		dst[i] = src[i];
 	}
 }
 
 //returns TRUE if str1 and str2 ae the same, otherwise, 0
-int StrCmp(char *str1, char *str2)
-{
-	while(*str1 == *str2)
-	{
-		if(*str1 == '\0' || *str2 == '\0')
-		{
-			break;
-		}
-		str1++;
-		str2++;
-	}
+int StrCmp(char *str1, char *str2){ 
 
-	if(*str1 == '\0' && *str2 == '\0')
-		return 0;
-	else
-		return -1;
+   while(1) {
+      if(*str1 != *str2) {
+         return FALSE;
+      }
+       
+      if(*str2 == '\0' && *str1 == '\0') { //added str1 condition
+         return TRUE;
+      }else if(*str2 == '\0' || *str1 == '\0'){
+	 return FALSE;
+      }
+      str1++;
+      str2++;
+   }
 }
 
 //converts an unsigned decimal number x < 1000000 into str
@@ -114,7 +111,7 @@ void Itoa(char *str, int x)
                 x /= 10;
         }
 
-        //*(str + digits) = '\0';
+        *(str + digits) = '\0';
 
         return;
 }

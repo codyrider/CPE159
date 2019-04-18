@@ -306,6 +306,7 @@ int WaitSR(void)
 
 void ExitSR(int exit_code)
 {
+	int i;
 	int ppid = pcb[run_pid].ppid;
 	if(pcb[ppid].state != WAIT)
 	{
@@ -317,6 +318,14 @@ void ExitSR(int exit_code)
 	pcb[ppid].state = READY;
 	EnQ(ppid, &ready_q);
 	pcb[ppid].trapframe_p->eax = exit_code;
+
+	for(i=0; i < PAGE_NUM; i++)
+	{
+		if(page_user[i] == i)
+		{
+			page_user[i] = NONE;
+		}
+	}
 
 	pcb[run_pid].state = UNUSED;
 	EnQ(run_pid, &pid_q);
@@ -331,8 +340,6 @@ void ExecSR(int code, int arg)
 	int * code_addr;
 	int * stack_addr;
 
-	int* temp;
-	
 	code_page = NONE;
 	stack_page = NONE;
 
@@ -367,7 +374,6 @@ void ExecSR(int code, int arg)
 
 	stack_addr = (int*)((int)stack_addr + PAGE_SIZE);
 	stack_addr--;
-	stack_addr--;
 	*stack_addr = arg;
 	stack_addr--;
 
@@ -375,7 +381,7 @@ void ExecSR(int code, int arg)
 	pcb[run_pid].trapframe_p--;
 	pcb[run_pid].trapframe_p->efl = EF_DEFAULT_VALUE | EF_INTR; //enables intr
 	pcb[run_pid].trapframe_p->cs = get_cs();
-	pcb[run_pid].trapframe_p->eip = (int)Aout;
+	pcb[run_pid].trapframe_p->eip = (int)code_addr;
 
 }
 
@@ -390,13 +396,14 @@ void WrapperSR(int pid, int handler, int arg)
 	int delta;
 	temp = (int *)((int)pcb[pid].trapframe_p+sizeof(trapframe_t));
 	delta = sizeof(int[3]);
-	MemCpy((char*)((int)pcb[pid].trapframe_p - delta), (char*)((int)pcb[pid].trapframe_p), sizeof(trapframe_t));
+	MemCpy((char*)((int)pcb[pid].trapframe_p - delta), (char*)(pcb[pid].trapframe_p), sizeof(trapframe_t));
 	pcb[pid].trapframe_p = (trapframe_t *)((int)pcb[pid].trapframe_p - delta);
-	*temp = pcb[pid].trapframe_p->eip;
 	temp--;
 	*temp = arg;
 	temp--;
 	*temp = handler;
+	temp--;
+	*temp = pcb[pid].trapframe_p->eip;
 	pcb[pid].trapframe_p->eip = (int)Wrapper;
 	
 }
