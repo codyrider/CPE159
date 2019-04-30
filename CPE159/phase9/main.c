@@ -110,6 +110,7 @@ int main(void) {                          // OS bootstraps
 
 void Kernel(trapframe_t *trapframe_p) {           // kernel runs
 	char ch;
+	int temp;
 
 	pcb[run_pid].trapframe_p = trapframe_p; // save it
 
@@ -185,6 +186,7 @@ void Kernel(trapframe_t *trapframe_p) {           // kernel runs
 	}
 	Scheduler();    // may need to pick another proc
 	set_cr3(pcb[run_pid].main_table);
+	temp = get_cr3();
 	Loader(pcb[run_pid].trapframe_p);
 }
 

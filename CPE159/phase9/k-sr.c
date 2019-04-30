@@ -298,7 +298,7 @@ int WaitSR(void)
 	pcb[i].state = UNUSED;
 	EnQ(i, &pid_q);
 
-	for(j=0; j < PAGE_SIZE; j++)
+	for(j=0; j < PAGE_NUM; j++)
 	{
 		if(page_user[j] == i)
 		{
@@ -425,23 +425,23 @@ void ExecSR(int code, int arg)
         MemCpy((char*)pages[MAIN_TABLE], (char *)kernel_main_table, sizeof(int[4]));
 	entry =  M256 >> 22;
 
-	*(int *)(pages[MAIN_TABLE] + entry) = pages[CODE_TABLE] | PRESENT | RW;
+	*((int*)pages[MAIN_TABLE] + entry) = pages[CODE_TABLE] | PRESENT | RW;
 
 	entry = G1_1 >> 22;
 	
-	*(int *)(pages[MAIN_TABLE] + entry) = pages[STACK_TABLE] | PRESENT | RW;
+	*((int *)pages[MAIN_TABLE] + entry) = pages[STACK_TABLE] | PRESENT | RW;
 
 	//build CODE_TABLE
         Bzero((char *)pages[CODE_TABLE], PAGE_SIZE);
 	entry = M256 & MASK10 >> 12;
 
-	*(int *)(pages[CODE_TABLE] + entry) = pages[CODE_PAGE] | PRESENT | RW;
+	*((int *)pages[CODE_TABLE] + entry) = pages[CODE_PAGE] | PRESENT | RW;
 
 	//build STACK_TABLE
 	Bzero((char *)pages[STACK_TABLE], PAGE_SIZE);
-	entry = M256 & MASK10 >> 12;
+	entry = G1_1 & MASK10 >> 12;
 
-	*(int *)(pages[STACK_TABLE] + entry) = pages[STACK_PAGE] | PRESENT | RW;
+	*((int *)pages[STACK_TABLE] + entry) = pages[STACK_PAGE] | PRESENT | RW;
 	
 	pcb[run_pid].main_table = pages[MAIN_TABLE];
 	pcb[run_pid].trapframe_p = (trapframe_t *)V_TF;
