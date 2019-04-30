@@ -1,0 +1,15 @@
+type.h- DONE
+main.c- DONE
+newProcSR- DONE
+ExitSR- DONE
+WaitSR- DONE
+const.h- DONE
+ExecSR-
+	1. DONE, not sure whether we add M256 or RAM for address calculation
+	2. DONE
+	3. DONE, not sure why we are setting eip to M256
+	4. 
+	5.  
+	6. 
+	7. DONE
+
